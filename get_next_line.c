@@ -6,7 +6,7 @@
 /*   By: mgessa <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 22:47:06 by mgessa            #+#    #+#             */
-/*   Updated: 2018/11/17 00:18:10 by mgessa           ###   ########.fr       */
+/*   Updated: 2018/11/17 01:30:29 by mgessa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char    *ft_realloc(char *str, char *buf)
 	i = ft_strlen(str);
 	j = ft_strlen(buf);
 	new = NULL;
-	if (!(new = (char*)malloc(sizeof(char*) * (i + j + 1))))
+	if (!(new = (char*)malloc(sizeof(char) * (i + j + 1))))
 		return (NULL);
 	i = 0;
 	while (str[i] != '\0')
@@ -42,46 +42,51 @@ char    *ft_realloc(char *str, char *buf)
 	return (new);
 }
 
-int		fill_next_line(char *flow, char **line)
+int		get_malloc_line(char **line, char *pnt)
 {
-	int		i;
-	int		size_flow;
+	int			i;
+	int			sz;
 
-	printf("Flow char: %s\n", flow);
+	sz = 0;
 	i = 0;
-	size_flow = ft_strlen(flow);
-	while (flow[i] != '\n' && flow[i] != '\0')
+	while (pnt[sz] != '\0' && pnt[sz] != '\n')
+		sz++;
+	if (!(line[0] = ft_strnew(sz)))
+		return (-1);
+	while (i < sz)
+	{
+		line[0][i] = pnt[i];
 		i++;
-	if (!(line[0] = ft_strnew(i)))
-		return (-42);
-	ft_strncpy(line[0], flow, i);
-	ft_strncpy(flow, flow + i + 1, size_flow);
-	flow[size_flow] = '\0';
-	return (1);
+	}
+	sz++;
+	return (sz);
 }
 
 int		get_next_line(const int fd, char **line)
 {
-	int     		ret;
-	static char    	over[BUF_SIZE + 1] = "salut\nhello\napl\nuhuhu";
+	int				ret;
 	char			buf[BUF_SIZE + 1];
-	int				passFirst;
+	static char		*str;
+	static char		*pnt;
+	int				sz_return;
 
-	passFirst = 0;
-	if (ft_strlen(over) > 0)
-		passFirst = fill_next_line(over, line);
-	if (passFirst == -42)
-		return (-1);
-	ret = 0;
+	if (!str)
+	{
+		if (!(str = ft_strnew(0)))
+			return (-1);
+	}
 	while ((ret = read(fd, buf, BUF_SIZE)))
 	{
 		buf[ret] = '\0';
-		if (passFirst == 1)
-		{
-			if (!(line[0] = ft_realloc(line[0], buf)))
-				return (-1);
-			passFirst = 0;
-		}
+		if(!(str = ft_realloc(str, buf)))
+			return (-1);
+		pnt = str;
+		printf("CALL THIS\n");
 	}
+	if((sz_return = get_malloc_line(line, pnt)) == -1)
+		return (-1);
+	pnt = pnt + sz_return;
+	if (pnt != '\0')
+		return (1);
 	return (0);
 }
