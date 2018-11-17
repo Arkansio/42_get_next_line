@@ -1,4 +1,5 @@
 *.a
+libft.a
 main.c
 *.o
 *.out
