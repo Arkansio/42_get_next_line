@@ -6,7 +6,7 @@
 /*   By: mgessa <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 22:47:06 by mgessa            #+#    #+#             */
-/*   Updated: 2018/11/17 02:57:02 by mgessa           ###   ########.fr       */
+/*   Updated: 2018/11/17 04:05:25 by mgessa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int		get_next_line(const int fd, char **line)
 	static char		*pnt;
 	int				sz_return;
 
-	if (fd == -1 || line == NULL)
+	if (fd < 0 || !line)
 		return (-1);
 	if (!str)
 	{
