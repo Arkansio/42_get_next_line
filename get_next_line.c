@@ -6,7 +6,7 @@
 /*   By: mgessa <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 22:47:06 by mgessa            #+#    #+#             */
-/*   Updated: 2018/11/17 01:30:29 by mgessa           ###   ########.fr       */
+/*   Updated: 2018/11/17 02:54:17 by mgessa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,14 @@ int		get_malloc_line(char **line, char *pnt)
 	i = 0;
 	while (pnt[sz] != '\0' && pnt[sz] != '\n')
 		sz++;
-	if (!(line[0] = ft_strnew(sz)))
+	if (!((*line) = ft_strnew(sz)))
 		return (-1);
 	while (i < sz)
 	{
-		line[0][i] = pnt[i];
+		(*line)[i] = pnt[i];
 		i++;
 	}
+	(*line)[i] = '\0';
 	sz++;
 	return (sz);
 }
@@ -65,28 +66,31 @@ int		get_malloc_line(char **line, char *pnt)
 int		get_next_line(const int fd, char **line)
 {
 	int				ret;
-	char			buf[BUF_SIZE + 1];
+	char			buf[BUFF_SIZE + 1];
 	static char		*str;
 	static char		*pnt;
 	int				sz_return;
 
+	if (fd <= -1 || line == NULL)
+		return (-1);
 	if (!str)
 	{
 		if (!(str = ft_strnew(0)))
 			return (-1);
 	}
-	while ((ret = read(fd, buf, BUF_SIZE)))
+	while ((ret = read(fd, buf, BUFF_SIZE)))
 	{
 		buf[ret] = '\0';
 		if(!(str = ft_realloc(str, buf)))
 			return (-1);
 		pnt = str;
-		printf("CALL THIS\n");
+	}
+	if (pnt >= str + ft_strlen(str))
+	{
+		return (0);
 	}
 	if((sz_return = get_malloc_line(line, pnt)) == -1)
 		return (-1);
 	pnt = pnt + sz_return;
-	if (pnt != '\0')
-		return (1);
-	return (0);
+	return (1);
 }
