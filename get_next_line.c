@@ -6,7 +6,7 @@
 /*   By: mgessa <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 22:47:06 by mgessa            #+#    #+#             */
-/*   Updated: 2018/11/17 04:05:25 by mgessa           ###   ########.fr       */
+/*   Updated: 2018/11/17 14:00:58 by mgessa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ int		get_malloc_line(char **line, char *pnt)
 		i++;
 	}
 	(*line)[i] = '\0';
-	sz++;
 	return (sz);
 }
 
@@ -71,13 +70,8 @@ int		get_next_line(const int fd, char **line)
 	static char		*pnt;
 	int				sz_return;
 
-	if (fd < 0 || !line)
+	if ((fd < 0 || !line) || (buf[0] == '\0' && (!(str = ft_strnew(0)))))
 		return (-1);
-	if (!str)
-	{
-		if (!(str = ft_strnew(0)))
-			return (-1);
-	}
 	while ((ret = read(fd, buf, BUFF_SIZE)))
 	{
 		buf[ret] = '\0';
@@ -91,6 +85,6 @@ int		get_next_line(const int fd, char **line)
 	}
 	if((sz_return = get_malloc_line(line, pnt)) == -1)
 		return (-1);
-	pnt = pnt + sz_return;
+	pnt = pnt + sz_return + 1;
 	return (1);
 }

@@ -1,5 +1,5 @@
 *.a
-libft.a
+libft/ibft.a
 main.c
 *.o
 *.out
