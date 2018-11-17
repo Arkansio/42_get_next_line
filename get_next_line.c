@@ -6,7 +6,7 @@
 /*   By: mgessa <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 22:47:06 by mgessa            #+#    #+#             */
-/*   Updated: 2018/11/17 16:12:47 by mgessa           ###   ########.fr       */
+/*   Updated: 2018/11/17 20:03:32 by mgessa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,24 +42,17 @@ char    *ft_realloc(char *str, char *buf)
 	return (new);
 }
 
-int		get_malloc_line(char **line, char *pnt)
+int		get_next_malloc(char **line, char *str)
 {
-	int			i;
-	int			sz;
+	int		i;
 
-	sz = 0;
 	i = 0;
-	while (pnt[sz] != '\0' && pnt[sz] != '\n')
-		sz++;
-	if (!((*line) = ft_strnew(sz)))
-		return (-1);
-	while (i < sz)
-	{
-		(*line)[i] = pnt[i];
+	while (str[i] && str[i] != '\n')
 		i++;
-	}
-	(*line)[i] = '\0';
-	return (sz);
+	if(!(line[0] = ft_strnew(i)))
+		return (-1);
+	ft_strncpy(line[0], str, i);
+	return (i);
 }
 
 int		get_next_line(const int fd, char **line)
@@ -67,24 +60,30 @@ int		get_next_line(const int fd, char **line)
 	int				ret;
 	char			buf[BUFF_SIZE + 1];
 	static char		*str;
-	static char		*pnt;
 	int				sz_return;
 
-	if ((fd < 0 || !line) || (buf[0] == '\0' && (!(str = ft_strnew(0)))))
+	if (fd == -1 || !line)
 		return (-1);
+	if (!str)
+	{
+		if (!(str = ft_strnew(0)))
+			return (-1);
+	}
 	while ((ret = read(fd, buf, BUFF_SIZE)))
 	{
+		if (ret == -1)
+			return (-1);
 		buf[ret] = '\0';
 		if(!(str = ft_realloc(str, buf)))
 			return (-1);
-		pnt = str;
 	}
-	if (pnt >= str + ft_strlen(str))
+	if (ft_strlen(str) > 0)
 	{
-		return (0);
+		if ((sz_return = get_next_malloc(line, str)) == -1)
+			return (-1);
+		ft_memmove(str, str + sz_return + 1, ft_strlen(str) - sz_return);
+		return (1);	
 	}
-	if((sz_return = get_malloc_line(line, pnt)) == -1)
-		return (-1);
-	pnt = pnt + sz_return + 1;
-	return (1);
+	line[0] = NULL;
+	return (0);
 }
