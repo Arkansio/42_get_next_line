@@ -6,7 +6,7 @@
 /*   By: mgessa <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 22:47:06 by mgessa            #+#    #+#             */
-/*   Updated: 2018/11/18 19:03:10 by mgessa           ###   ########.fr       */
+/*   Updated: 2018/11/18 19:42:20 by mgessa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,9 @@ int		ft_getline(char **line, char *str, char *over)
 		i++;
 	if(!(line[0] = ft_strsub(str, 0, i)))
 		return (-1);
-	ft_memmove(over, str + i + 1, ft_strlen(str) - i);
-	over[i] = '\0';
+	ft_memcpy(over, str + i + 1, ft_strlen(str + i));
 	free(str);
-	return (0);
+	return (ft_strlen(str + i + 1));
 }
 
 char	*str_realloc(char *str, char *buf)
@@ -49,14 +48,14 @@ int		get_next_line(const int fd, char **line)
 		return (-1);
 	if (ft_strlen(over) > 0)
 	{
-		str = ft_strjoin(str, over);
+		str = str_realloc(str, over);
 		over[0] = '\0';
 		if (ft_strchr(str, '\n'))
 		{
-			if (ft_getline(line, str, over) == -1)
-				return (-1);
-			else
-				return (1);
+//			printf("value over: %s\n", over);
+			ft_getline(line, str, over);
+			return (1);
+//			printf("real Value %s: \n", over);
 		}
 	}
 	while ((ret = read(fd, buf, BUFF_SIZE)))
