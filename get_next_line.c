@@ -6,7 +6,7 @@
 /*   By: mgessa <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 22:47:06 by mgessa            #+#    #+#             */
-/*   Updated: 2018/11/18 19:42:20 by mgessa           ###   ########.fr       */
+/*   Updated: 2018/11/18 19:44:09 by mgessa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ int		get_next_line(const int fd, char **line)
 		if (ft_strchr(str, '\n'))
 			break;
 	}
+	if (ft_strlen(str) <= 0)
+		return (0);
 	if (ft_getline(line, str, over) == -1)
 		return (-1);
 	else
