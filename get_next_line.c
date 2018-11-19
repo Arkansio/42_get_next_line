@@ -6,7 +6,7 @@
 /*   By: mgessa <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 22:47:06 by mgessa            #+#    #+#             */
-/*   Updated: 2018/11/19 13:34:16 by mgessa           ###   ########.fr       */
+/*   Updated: 2018/11/19 14:22:57 by mgessa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	*ft_check(const int fd, char **line)
 
 	if (fd < 0 || !line)
 		return (NULL);
-	if (!(str = ft_strnew(0)))
+	if (!(str = ft_strnew(1)))
 		return (NULL);
 	return (str);
 }
@@ -90,6 +90,7 @@ int		get_next_line(const int fd, char **line)
 		return (-1);
 	if (ft_strlen(str) <= 0)
 	{
+		free(str);
 		line[0] = NULL;
 		return (0);
 	}
