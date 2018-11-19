@@ -6,7 +6,7 @@
 /*   By: mgessa <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 22:47:06 by mgessa            #+#    #+#             */
-/*   Updated: 2018/11/19 14:22:57 by mgessa           ###   ########.fr       */
+/*   Updated: 2018/11/19 16:25:07 by mgessa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ char	*str_realloc(char *str, char *buf)
 
 	if (!(tmp = ft_strjoin(str, buf)))
 		return (NULL);
+	buf[0] = '\0';
 	free(str);
 	return (tmp);
 }
@@ -78,7 +79,6 @@ int		get_next_line(const int fd, char **line)
 	{
 		if (!(str = str_realloc(str, over)))
 			return (-1);
-		over[0] = '\0';
 		if (ft_strchr(str, '\n'))
 		{
 			if (ft_getline(line, str, over) == -1)
