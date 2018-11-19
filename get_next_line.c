@@ -6,7 +6,7 @@
 /*   By: mgessa <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 22:47:06 by mgessa            #+#    #+#             */
-/*   Updated: 2018/11/19 16:25:07 by mgessa           ###   ########.fr       */
+/*   Updated: 2018/11/19 19:02:10 by mgessa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,15 @@ int		ft_getline(char **line, char *str, char *over)
 	int		i;
 
 	i = 0;
+	if (!str)
+		return (-1);
 	while (str[i] && str[i] != '\n')
 		i++;
 	if (!(line[0] = ft_strsub(str, 0, i)))
 		return (-1);
 	ft_memcpy(over, str + i + 1, ft_strlen(str + i));
-	free(str);
+	if (str)
+		free(str);
 	return (1);
 }
 
@@ -30,10 +33,13 @@ char	*str_realloc(char *str, char *buf)
 {
 	char	*tmp;
 
+	if (!str)
+		return (NULL);
 	if (!(tmp = ft_strjoin(str, buf)))
 		return (NULL);
 	buf[0] = '\0';
-	free(str);
+	if (str)
+		free(str);
 	return (tmp);
 }
 
@@ -81,9 +87,7 @@ int		get_next_line(const int fd, char **line)
 			return (-1);
 		if (ft_strchr(str, '\n'))
 		{
-			if (ft_getline(line, str, over) == -1)
-				return (-1);
-			return (1);
+			return (ft_getline(line, str, over));
 		}
 	}
 	if (!(str = read_gnl(fd, str)))
