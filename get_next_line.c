@@ -6,12 +6,11 @@
 /*   By: mgessa <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 22:47:06 by mgessa            #+#    #+#             */
-/*   Updated: 2018/11/18 21:48:22 by mgessa           ###   ########.fr       */
+/*   Updated: 2018/11/19 13:34:16 by mgessa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include "stdio.h"
 
 int		ft_getline(char **line, char *str, char *over)
 {
