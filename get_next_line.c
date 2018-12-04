@@ -6,7 +6,7 @@
 /*   By: mgessa <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 22:47:06 by mgessa            #+#    #+#             */
-/*   Updated: 2018/11/19 19:02:10 by mgessa           ###   ########.fr       */
+/*   Updated: 2018/12/04 05:41:57 by mgessa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*str_realloc(char *str, char *buf)
 
 char	*read_gnl(const int fd, char *str)
 {
-	char	buf[BUFF_SIZE + 1];
+	char		buf[BUFF_SIZE + 1];
 	int		ret;
 
 	while ((ret = read(fd, buf, BUFF_SIZE)))
@@ -77,17 +77,17 @@ char	*ft_check(const int fd, char **line)
 int		get_next_line(const int fd, char **line)
 {
 	char			*str;
-	static char		over[BUFF_SIZE + 1];
+	static char		over[1024][BUFF_SIZE + 1];
 
 	if (!(str = ft_check(fd, line)))
 		return (-1);
-	if (ft_strlen(over) > 0)
+	if (ft_strlen(over[fd]) > 0)
 	{
-		if (!(str = str_realloc(str, over)))
+		if (!(str = str_realloc(str, over[fd])))
 			return (-1);
 		if (ft_strchr(str, '\n'))
 		{
-			return (ft_getline(line, str, over));
+			return (ft_getline(line, str, over[fd]));
 		}
 	}
 	if (!(str = read_gnl(fd, str)))
@@ -98,5 +98,5 @@ int		get_next_line(const int fd, char **line)
 		line[0] = NULL;
 		return (0);
 	}
-	return (ft_getline(line, str, over));
+	return (ft_getline(line, str, over[fd]));
 }
