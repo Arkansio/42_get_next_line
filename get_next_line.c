@@ -6,7 +6,7 @@
 /*   By: mgessa <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 22:47:06 by mgessa            #+#    #+#             */
-/*   Updated: 2018/12/04 05:41:57 by mgessa           ###   ########.fr       */
+/*   Updated: 2018/12/05 01:48:32 by mgessa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*str_realloc(char *str, char *buf)
 char	*read_gnl(const int fd, char *str)
 {
 	char		buf[BUFF_SIZE + 1];
-	int		ret;
+	int			ret;
 
 	while ((ret = read(fd, buf, BUFF_SIZE)))
 	{
