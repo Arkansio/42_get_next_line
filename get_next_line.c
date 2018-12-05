@@ -6,7 +6,7 @@
 /*   By: mgessa <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 22:47:06 by mgessa            #+#    #+#             */
-/*   Updated: 2018/12/05 01:48:32 by mgessa           ###   ########.fr       */
+/*   Updated: 2018/12/05 19:14:28 by mgessa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*read_gnl(const int fd, char *str)
 	char		buf[BUFF_SIZE + 1];
 	int			ret;
 
-	while ((ret = read(fd, buf, BUFF_SIZE)))
+	while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
 	{
 		buf[ret] = '\0';
 		if (ret == -1)
@@ -59,7 +59,11 @@ char	*read_gnl(const int fd, char *str)
 			break ;
 	}
 	if (ret == -1)
+	{
+		if (str)
+			free(str);
 		return (NULL);
+	}
 	return (str);
 }
 
@@ -77,7 +81,7 @@ char	*ft_check(const int fd, char **line)
 int		get_next_line(const int fd, char **line)
 {
 	char			*str;
-	static char		over[1024][BUFF_SIZE + 1];
+	static char		over[5012][BUFF_SIZE + 1];
 
 	if (!(str = ft_check(fd, line)))
 		return (-1);
